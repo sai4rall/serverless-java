@@ -29,13 +29,12 @@ public class Handler implements RequestHandler<S3Event, Void> {
 	@Override
 	public Void handleRequest(S3Event s3Event, Context context) {
 		c=getConnection();
-		String csvData=getCsvData();
-		System.out.println("Successfully read S3 object to local temp file");
+		getCsvData();
 
 		return null;
 	}
 
-	private String getCsvData() {
+	private void getCsvData() {
 		StringBuffer content = new StringBuffer("");
 		AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 		S3Object oo = s3Client.getObject(sourceBucketName, sourceBucketPath+"/"+obj+".csv");
@@ -49,7 +48,7 @@ public class Handler implements RequestHandler<S3Event, Void> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return content.toString();
+
 	}
 
 	private void insertData(String[] data) {
